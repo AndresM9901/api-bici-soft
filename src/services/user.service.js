@@ -13,7 +13,7 @@ class UserService {
         } else {
             return {
                 message: "El usuario no se pudo crear revise sus datos",
-                status: 404
+                status: 400
             }
         }
     }

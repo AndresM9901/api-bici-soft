@@ -1,7 +1,7 @@
 const bikeModel = require('../models/bike.model');
 const createLocation = require('../utils/createLocation');
 
-class bikeService {
+class BikeService {
     static async getBikes() {
         try {
             let bikes = await bikeModel.find({});
@@ -47,18 +47,18 @@ class bikeService {
 
     static async createBike(newBike) {
         try {
-            const createBike = createLocation(newBike);
-            let bike = await bikeModel.create(createBike);
+            newBike.location = createLocation(newBike.location);
+            let bike = await bikeModel.create(newBike);
             if(bike) {
                 return {
                     bike,
                     message: "Bicicleta registrada correctamente",
-                    status: 200
+                    status: 201
                 }
             } else {
                 return {
                     message: "La bicicleta no se pudo registrar correctamente revisa los datos",
-                    status: 404
+                    status: 400
                 }
             }
         } catch (error) {
@@ -72,10 +72,10 @@ class bikeService {
 
     static async updateBike(idBike, updateBike) {
         try {
-            const updateBikeData = createLocation(updateBike);
+            updateBike.location = createLocation(updateBike.location);
             let { bike } = await bikeService.getBikeById(idBike);
             if (bike) {
-                await bikeModel.findOneAndUpdate({_id: bike._id }, updateBikeData);
+                await bikeModel.findOneAndUpdate({_id: bike._id }, updateBike);
                 return {
                     message: "Bicicleta actualizada correctamente",
                     status: 200
@@ -122,4 +122,4 @@ class bikeService {
     }
 }
 
-module.exports = bikeService
+module.exports = BikeService

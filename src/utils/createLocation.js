@@ -1,8 +1,8 @@
-function createLocation(data) {
-    data.location = data.location.split(' ');
-    const point = { type: "Point", coordinates: data.location }
-    data.location = point;
-    return data;
+function createLocation(atribute) {
+    atribute = atribute.split(' ');
+    const point = { type: "Point", coordinates: atribute }
+    atribute = point;
+    return atribute;
 }
 
 module.exports = createLocation;

@@ -3,6 +3,7 @@ const route = express.Router();
 const jwt = require('jsonwebtoken');
 const validationEmial = require('../middleware/email.validation');
 const verifyToken = require('../middleware/token.validation');
+const isAdmin = require('../middleware/role.validation');
 require('dotenv').config();
 
 const userService = require('../services/user.service');
@@ -20,14 +21,18 @@ route.use("/signup", (req, res, next) => {
 
 route.post('/signup',
     async (req, res, next) => {
-    const userDTO = req.body;
+    try {
+        const userDTO = req.body;
 
-    const { user, message, status } = await userService.signup(userDTO);
+        const { user, message, status } = await userService.signup(userDTO);
 
-    res.status(status).json({
-        user,
-        message
-    });
+        res.status(status).json({
+            user,
+            message
+        });
+    } catch (error) {
+        res.status(500).json({ message: `Internal server error ${error}` });
+    }
 });
 
 route.post('/login', async (req, res) => {
@@ -44,7 +49,7 @@ route.post('/login', async (req, res) => {
         };
         const { user } = await userService.login(userDTO);
         // console.log(typeof user.identityDocument);
-        if (user.identityDocument === identityDocument && user.password === password) {
+        if (user.identityDocument === identityDocument) {
             const token = jwt.sign({ identityDocument }, process.env.SECRETKEY, { expiresIn: "1h" });
             res.status(200).json({
                 token,
@@ -58,7 +63,7 @@ route.post('/login', async (req, res) => {
     }
 });
 
-route.get('/', verifyToken, async (req, res) => {
+route.get('/', [verifyToken, isAdmin], async (req, res) => {
     const { users, message, status } = await userService.getUsers();
     res.status(status).json({
         users,
@@ -66,7 +71,7 @@ route.get('/', verifyToken, async (req, res) => {
     });
 });
 
-route.delete('/:document', verifyToken, async (req, res) => {
+route.delete('/:document', [verifyToken, isAdmin], async (req, res) => {
     try {
         let { user } = await userService.getUser(req.params.document);
         if(user) {

@@ -1,4 +1,5 @@
 const conexion = require('../config/connection');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new conexion.Schema({
     identityDocument: {

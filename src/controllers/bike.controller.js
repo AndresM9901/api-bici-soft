@@ -5,6 +5,7 @@ const verifyToken = require('../middleware/token.validation');
 require('dotenv').config();
 
 const bikeService = require('../services/bike.service');
+const isAdmin = require('../middleware/role.validation');
 
 route.get('/', verifyToken, async (req, res) => {
     try {
@@ -33,7 +34,7 @@ route.get('/:id', verifyToken, async (req, res) => {
     }
 });
 
-route.post('/', verifyToken, async (req, res) => {
+route.post('/', [verifyToken, isAdmin], async (req, res) => {
     try {
         const newBike = req.body;
         const { bike, message, status } = await bikeService.createBike(newBike);
@@ -47,7 +48,7 @@ route.post('/', verifyToken, async (req, res) => {
     }
 });
 
-route.put('/:id', verifyToken, async (req, res) => {
+route.put('/:id', [verifyToken, isAdmin], async (req, res) => {
     try {
         let updateBike = req.body;
         let { message, status } = await bikeService.updateBike(req.params.id, updateBike);
@@ -60,7 +61,7 @@ route.put('/:id', verifyToken, async (req, res) => {
     }
 });
 
-route.delete('/:id', verifyToken, async (req, res) => {
+route.delete('/:id', [verifyToken, isAdmin], async (req, res) => {
     try {
         let { message, status } = await bikeService.deleteBike(req.params.id);
     
