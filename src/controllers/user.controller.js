@@ -7,7 +7,7 @@ const isAdmin = require('../middleware/role.validation');
 require('dotenv').config();
 
 const userService = require('../services/user.service');
-
+/*
 route.use("/signup", (req, res, next) => {
     const isValidEmail = validationEmial(req.body.email);
     if(isValidEmail) {
@@ -18,6 +18,7 @@ route.use("/signup", (req, res, next) => {
         });
     }
 })
+*/
 
 route.post('/signup',
     async (req, res, next) => {

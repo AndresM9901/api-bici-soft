@@ -3,8 +3,7 @@ const conexion = require('../config/connection');
 const locationSchema = require('./location.model');
 
 const availableBikeSchema = new conexion.Schema({
-    idByke: mongoose.SchemaTypes.ObjectId,
-    ref: "bykes"
+    idBike: mongoose.SchemaTypes.ObjectId
 })
 
 const trainingCenterSchema = new conexion.Schema({

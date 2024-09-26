@@ -2,6 +2,8 @@ const express = require('express');
 const routeUser = require('./controllers/user.controller');
 const routeBike = require('./controllers/bike.controller');
 const routeEvent = require('./controllers/event.controller');
+const routeRent = require('./controllers/rent.controller');
+const routeCenter = require('./controllers/training-center.controller');
 const logger = require('morgan');
 const path = require('path');
 
@@ -15,7 +17,9 @@ app.use(express.json());
 
 app.use('/api/users', routeUser);
 app.use('/api/bikes', routeBike);
-app.use('/api/bikes', routeEvent);
+app.use('/api/events', routeEvent);
+app.use('/api/rentals', routeRent);
+app.use('/api/centers', routeCenter);
 
 
 // app.post('/')

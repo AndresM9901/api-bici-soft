@@ -1,4 +1,5 @@
 const trainingCenterModel = require('../models/training-center.model');
+const bikeModel = require('../models/bike.model');
 const createLocation = require('../utils/createLocation');
 
 class TrainingCenterService {
@@ -70,6 +71,35 @@ class TrainingCenterService {
         }
     }
 
+    static async addBike(idCenter, idBike) {
+        try {
+            let bike = await bikeModel.findOne({_id: idBike});
+            const bikes = [];
+            let data = await trainingCenterModel.findOne({_id: idCenter});
+            console.log(data, bike);
+            if(bike && data) {
+                bikes.push(bike._id);
+                data.availableBike.push(bike);
+                data.save();
+    
+                return {
+                    message: 'Añadido correctamente',
+                    status: 201
+                }
+            } else {
+                return {
+                    message: "La bicicleta o el centro de formación no esta registrado",
+                    status: 400
+                }
+            }
+        } catch (error) {
+            return {
+                message: `Internal server error ${error}`,
+                status: 500
+            }
+        }
+    }
+
     static async updateCenter(idCenter, updateCenter) {
         try {
             updateCenter.location = createLocation(newCenter.location);
@@ -118,3 +148,5 @@ class TrainingCenterService {
         }
     }
 }
+
+module.exports = TrainingCenterService

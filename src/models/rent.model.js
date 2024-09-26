@@ -19,7 +19,7 @@ const rentSchema = new conexion.Schema({
         type: locationSchema,
         required: [true, "La ruta de destino no debe estar vacia"]
     },
-    discountPercentage: {
+    total: {
         type: Number,
         default: 0
     },
@@ -28,7 +28,7 @@ const rentSchema = new conexion.Schema({
         ref: "user",
         required: [true, "Debe estar un usuario registrado"]
     },
-    byke: {
+    bike: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: "bike",
         required: [true, "Debe estar registrada la bicicleta"]
